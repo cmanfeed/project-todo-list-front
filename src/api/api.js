@@ -1,5 +1,5 @@
 export const Api = {
-  url: "http://localhost:3001/tasks",
+  url: "https://project-todo-list-heroku.herokuapp.com/tasks",
   fetchGet: () => fetch(Api.url),
   fetchGetById: (id) => fetch(Api.url + "/findid/" + id),
   fetchPost: (body) => {
