@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -18,6 +23,9 @@ const TaskEdit = (props) => {
   const getTaskById = async () => {
     const response = await Api.fetchGetById(id);
     const data = await response.json();
+    data.priority = (data.priority).toString();
+    data.status = (data.status).toString();
+    data.dateFinal = (data.dateFinal).toString();
     setFields(data);
   };
 
@@ -66,22 +74,38 @@ const TaskEdit = (props) => {
           />
         </div>
         <div className="textfield-margin">
-          <TextField
-            label="Prioridade"
-            value={fields.priority || ""}
-            onChange={handleFieldsChange}
-            variant="outlined"
-            name="priority"
-          />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Prioridade</FormLabel>
+            <RadioGroup
+              aria-label="prioridade"
+              name="priority"
+              value={fields.priority || ""}
+              onChange={handleFieldsChange}
+            >
+              <FormControlLabel value={"1"} control={<Radio />} label="Alta" />
+              <FormControlLabel value={"2"} control={<Radio />} label="Média" />
+              <FormControlLabel value={"3"} control={<Radio />} label="Baixa" />
+            </RadioGroup>
+          </FormControl>
         </div>
         <div className="textfield-margin">
-          <TextField
-            label="Status"
-            value={fields.status || ""}
-            onChange={handleFieldsChange}
-            variant="outlined"
-            name="status"
-          />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Status</FormLabel>
+            <RadioGroup
+              aria-label="status"
+              name="status"
+              value={fields.status || ""}
+              onChange={handleFieldsChange}
+            >
+              <FormControlLabel value={"1"} control={<Radio />} label="Fazer" />
+              <FormControlLabel
+                value={"2"}
+                control={<Radio />}
+                label="Fazendo"
+              />
+              <FormControlLabel value={"3"} control={<Radio />} label="Feito" />
+            </RadioGroup>
+          </FormControl>
         </div>
         <div className="textfield-margin">
           <TextField

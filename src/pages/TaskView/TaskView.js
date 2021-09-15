@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -48,6 +53,8 @@ const TaskView = (props) => {
   const getTaskById = async () => {
     const response = await Api.fetchGetById(id);
     const data = await response.json();
+    data.priority = data.priority.toString();
+    data.status = data.status.toString();
     setTask(data);
   };
 
@@ -87,20 +94,36 @@ const TaskView = (props) => {
           />
         </div>
         <div className="textfield-margin">
-          <TextField
-            disabled
-            label="Prioridade"
-            value={task.priority || ""}
-            variant="outlined"
-          />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Prioridade</FormLabel>
+            <RadioGroup
+              aria-label="prioridade"
+              name="priority"
+              value={task.priority || ""}
+            >
+              <FormControlLabel value={"1"} control={<Radio />} label="Alta" />
+              <FormControlLabel value={"2"} control={<Radio />} label="Média" />
+              <FormControlLabel value={"3"} control={<Radio />} label="Baixa" />
+            </RadioGroup>
+          </FormControl>
         </div>
         <div className="textfield-margin">
-          <TextField
-            disabled
-            label="Status"
-            value={task.status || ""}
-            variant="outlined"
-          />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Prioridade</FormLabel>
+            <RadioGroup
+              aria-label="prioridade"
+              name="priority"
+              value={task.status || ""}
+            >
+              <FormControlLabel value={"1"} control={<Radio />} label="Fazer" />
+              <FormControlLabel
+                value={"2"}
+                control={<Radio />}
+                label="Fazendo"
+              />
+              <FormControlLabel value={"3"} control={<Radio />} label="Feito" />
+            </RadioGroup>
+          </FormControl>
         </div>
         <div className="textfield-margin">
           <TextField
@@ -139,23 +162,22 @@ const TaskView = (props) => {
           <Fade in={open}>
             <div className={classes.paper}>
               <h2 id="transition-modal-title">Tem Certeza?</h2>
-              <p id="transition-modal-description">
+              <p
+                id="transition-modal-description"
+                style={{ marginBottom: "30px" }}
+              >
                 Essa ação excluirá a Tarefa do Banco de Dados.
               </p>
               <Button
                 variant="contained"
-                color="primary"
-                onClick={handleClose}
-                style={{ marginRight: "10px" }}
-              >
-                Cancelar
-              </Button>
-              <Button
-                variant="contained"
                 color="secondary"
                 onClick={handleDelete}
+                style={{ marginRight: "10px" }}
               >
                 Excluir
+              </Button>
+              <Button variant="contained" color="primary" onClick={handleClose}>
+                Cancelar
               </Button>
             </div>
           </Fade>

@@ -47,11 +47,11 @@ const TaskCard = (props) => {
 
   const statusText = (task) => {
     if (task.status === 3) {
-      return "Feito!";
+      return "Feito";
     } else if (task.status === 2) {
-      return "Em Andamento";
+      return "Fazendo";
     } else {
-      return "A Fazer";
+      return "Fazer";
     }
   };
 

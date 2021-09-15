@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -8,10 +13,20 @@ import { Api } from "../../api/api";
 import "./TaskAdd.scss";
 
 const TaskAdd = (props) => {
+  const [priorityValue, setPriorityValue] = React.useState("1");
+  const [statusValue, setStatusValue] = React.useState("1");
+
+  const handlePriorityChange = (event) => {
+    setPriorityValue(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setStatusValue(event.target.value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const title = e.target.title.value;
-    console.log(e);
     const description = e.target.description.value;
     const priority = e.target.priority.value;
     const status = e.target.status.value;
@@ -25,7 +40,7 @@ const TaskAdd = (props) => {
       dateFinal: dateFinal,
     };
 
-    console.log(dateFinal)
+    console.log(dateFinal);
 
     const response = await Api.fetchPost(Task);
     const data = await response.json();
@@ -41,7 +56,12 @@ const TaskAdd = (props) => {
       </div>
       <form autoComplete="off" onSubmit={handleSubmit}>
         <div className="textfield-margin">
-          <TextField required label="Nome" variant="outlined" name="title" />
+          <TextField
+            required
+            label="Nome"
+            variant="outlined"
+            name="title"
+          />
         </div>
         <div className="textfield-margin">
           <TextField
@@ -55,15 +75,34 @@ const TaskAdd = (props) => {
           />
         </div>
         <div className="textfield-margin">
-          <TextField
-            required
-            label="Prioridade"
-            variant="outlined"
-            name="priority"
-          />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Prioridade</FormLabel>
+            <RadioGroup
+              aria-label="prioridade"
+              name="priority"
+              value={priorityValue}
+              onChange={handlePriorityChange}
+            >
+              <FormControlLabel value="1" control={<Radio />} label="Alta" />
+              <FormControlLabel value="2" control={<Radio />} label="Média" />
+              <FormControlLabel value="3" control={<Radio />} label="Baixa" />
+            </RadioGroup>
+          </FormControl>
         </div>
         <div className="textfield-margin">
-          <TextField required label="Status" variant="outlined" name="status" />
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Status</FormLabel>
+            <RadioGroup
+              aria-label="status"
+              name="status"
+              value={statusValue}
+              onChange={handleStatusChange}
+            >
+              <FormControlLabel value="1" control={<Radio />} label="Fazer" />
+              <FormControlLabel value="2" control={<Radio />} label="Fazendo" />
+              <FormControlLabel value="3" control={<Radio />} label="Feito" />
+            </RadioGroup>
+          </FormControl>
         </div>
         <div className="textfield-margin">
           <TextField
